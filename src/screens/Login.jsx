@@ -1,8 +1,45 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const Login = () => {
+
+  const getUsuarios = async() => {
+    const url = "http://127.0.0.1:8080/usuarios";
+    const request = await fetch(url, {
+      method: "GET",
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      })
+    });
+    //console.log(request);
+    const response = await request.json();
+    console.log(response);
+  }
+
+  const setUsuario = async() => {
+    const url = "http://127.0.0.1:8080/usuarios";
+    const request = await fetch(url, {
+      method: "POST",
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }),
+      body: JSON.stringify({
+        "usuario": "Jerónimo",
+        "contrasena": "qwe245345"
+      })
+    });
+    const response = await request.json();
+    console.log(response);
+  }
+
+  useEffect(() => {
+    getUsuarios();
+  }, []);
+
 	return (
-		<>
+		<div class="login-page">
       <div className="login-box">
         <div className="card card-outline card-primary">
           <div className="card-header text-center">
@@ -45,8 +82,8 @@ const Login = () => {
               <a href="#" className="btn btn-block btn-primary">
                 <i className="fab fa-facebook mr-2"></i> Sign in using Facebook
               </a>
-              <a href="#" className="btn btn-block btn-danger">
-                <i className="fab fa-google-plus mr-2"></i> Sign in using Google+
+              <a href="#" className="btn btn-block btn-danger" onClick={ () => setUsuario() }>
+                <i className="fab fa-google-plus mr-2"></i> Add user
               </a>
             </div>
 
@@ -59,7 +96,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-		</>
+		</div>
 	)
 }
 
