@@ -2,8 +2,9 @@ import { useState } from "react"
 import { fullcrudContext } from "./fullcrudContext"
 const ContextProvider = ({ children }) => {
     const [usuario, setUsuario] = useState({
-        "id_user": 1,
-        "name": "Daniel",
+        "id_usuario": 0,
+        "usuario": "",
+        "contrasena": ""
     })
     return (
         <fullcrudContext.Provider
