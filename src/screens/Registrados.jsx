@@ -86,3 +86,4 @@ const Registrados = () => {
 }
 
 export default Registrados
+

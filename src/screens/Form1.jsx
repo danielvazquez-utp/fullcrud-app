@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Titlebreadcrums from '../components/Titlebreadcrums';
+import Swal from 'sweetalert2';
 
 const Form1 = () => {
 
@@ -10,8 +11,39 @@ const Form1 = () => {
     const [amaterno, setAmaterno] = useState('');
     const [fnac, setFnac] = useState('');
     const [edocivil, setEdocivil] = useState('Soltero');
-
     const [hijos, setHijos] = useState("No");
+    const [nohijos, setNohijos] = useState(0);
+    const [otroedo, setOtroedo] = useState('');
+
+    const setPersona = async() => {
+      const url = "http://127.0.0.1:8080/personas";
+      const request = await fetch(url, {
+        method: "POST",
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        }),
+        body: JSON.stringify({
+          "nombres": nombre,
+          "apellidoP": apaterno,
+          "apellidoM": amaterno,
+          "fechaNac": fnac,
+          "estadoCivil": edocivil,
+          "numhijos": nohijos
+        })
+      });
+      const response = await request.json();
+      console.log(response);
+      //alert(response.msg);
+      Swal.fire({
+        title: "Mensaje",
+        text: response.msg,
+        icon: 'success',
+        confirmButtonText: 'Cool'
+      })
+    }
+
+    
 
   return (
     <div className='layout-top-nav'>
@@ -41,15 +73,15 @@ const Form1 = () => {
                                       </div>
                                       <div className="form-group">
                                         <label>Apellido Paterno</label>
-                                        <input type="text" className="form-control" placeholder="Sosa" />
+                                        <input type="text" className="form-control" placeholder="Sosa" value={ apaterno } onChange={ e => setApaterno( e.target.value ) } />
                                       </div>
                                       <div className="form-group">
                                         <label>Apellido Materno</label>
-                                        <input type="text" className="form-control" placeholder="López" />
+                                        <input type="text" className="form-control" placeholder="López" value={ amaterno } onChange={ e => setAmaterno( e.target.value ) } />
                                       </div>
                                       <div className="form-group">
                                         <label>Fecha de nacimiento</label>
-                                        <input type="date" className="form-control" />
+                                        <input type="date" className="form-control" value={ fnac } onChange={  e => setFnac( e.target.value ) } />
                                       </div>
                                       <div className="form-group">
                                         <label>Estado civil ({ edocivil })</label>
@@ -83,7 +115,7 @@ const Form1 = () => {
                                         edocivil==="Otro" && (
                                           <div className="form-group">
                                             <label>¿Cuál?</label>
-                                            <input type="text" className="form-control" placeholder="López" />
+                                            <input type="text" className="form-control" placeholder="López" value={ otroedo } onChange={ e => setOtroedo( e.target.value )} />
                                           </div>    
                                         )  
                                       }
@@ -111,12 +143,15 @@ const Form1 = () => {
                                         hijos === "Si" && (
                                           <div className="form-group">
                                             <label>No. de hijos</label>
-                                            <input type="number" className="form-control" placeholder="0" />
+                                            <input type="number" className="form-control" placeholder="0" value={ nohijos } onChange={ e => setNohijos( e.target.value )} />
                                           </div>      
                                         )
                                       }
                                       
                                       
+                                  </div>
+                                  <div className='card-footer'>
+                                    <button className='btn btn-primary' onClick={() => setPersona() }>Agregar</button>
                                   </div>
                               </div>
                           </div>
