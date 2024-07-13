@@ -11,10 +11,10 @@ const Titlebreadcrums = ({ title="Titulo", subtitle="Subtitulo", breadcrums=["Op
                     <div className="col-sm-6">
                         <ol className="breadcrumb float-sm-right">
                             {
-                                breadcrums.map( (e) => {
+                                breadcrums.map( (e, index) => {
                                     return (
                                         <>
-                                            <li className="breadcrumb-item"><a href="#">{ e }</a></li>
+                                            <li key={index} className="breadcrumb-item"><a href="#">{ e }</a></li>
                                         </>
                                     )
                                 })

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Titlebreadcrums from '../components/Titlebreadcrums';
 import Swal from 'sweetalert2';
+import { fullcrudContext } from "../components/fullcrudContext";
 
 const Form1 = () => {
 
@@ -14,6 +15,8 @@ const Form1 = () => {
     const [hijos, setHijos] = useState("No");
     const [nohijos, setNohijos] = useState(0);
     const [otroedo, setOtroedo] = useState('');
+    const { usuario } = useContext( fullcrudContext );
+    console.log(usuario);
 
     const setPersona = async() => {
       const url = "http://127.0.0.1:8080/personas";
@@ -159,12 +162,10 @@ const Form1 = () => {
                           <div className="col-lg-6">
                               <div className="card">
                                   <div className="card-header">
-                                      <h5 className="card-title m-0">Featured</h5>
+                                      <h5 className="card-title m-0">Usuario</h5>
                                   </div>
                                   <div className="card-body">
-                                      <h6 className="card-title">Special title treatment</h6>
-
-                                      <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                      <h6 className="card-title">Nombre: { usuario.usuario } </h6>
                            
                                   </div>
                               </div>
