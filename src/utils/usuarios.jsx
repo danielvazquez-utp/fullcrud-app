@@ -1,3 +1,4 @@
+//Función que retorna la colección completa de usuarios
 export const getUsuarios = async() => {
     const url = "http://127.0.0.1:8080/usuarios";
     const request = await fetch(url, {
@@ -7,12 +8,11 @@ export const getUsuarios = async() => {
         'Access-Control-Allow-Origin': '*',
       })
     });
-    //console.log(request);
     const response = await request.json();
     return response;
 }
 
-export const setUsuario = async(user, pass) => {
+export const setUsuario = async( user, pass ) => {
     const url = "http://127.0.0.1:8080/usuarios";
     const request = await fetch(url, {
       method: "POST",
@@ -29,7 +29,7 @@ export const setUsuario = async(user, pass) => {
     return response;
 }
 
-export const getUsuarioPyC = async(user, pass) => {
+export const getUsuarioByUserPass = async( user, pass ) => {
     const url = "http://127.0.0.1:8080/usuarioByUC";
     const request = await fetch(url, {
       method: "POST",
