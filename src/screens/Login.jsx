@@ -1,13 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { getUsuarioByUserPass } from "../utils/usuarios";
 import Swal from "sweetalert2";
 import { fullcrudContext } from "../components/fullcrudContext";
+import { types } from "../components/userReducer";
 
 const Login = () => {
-  const { setUsuario } = useContext( fullcrudContext );
+  //const { setUsuario } = useContext( fullcrudContext );
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
+  const [state, dispatch] = useContext(fullcrudContext);
+  const history = useHistory();
 
   const handleAccess = async() => {
     if (user!="" && pass!="") {
@@ -15,12 +18,14 @@ const Login = () => {
       const acceso = await getUsuarioByUserPass(user, pass);
       if (acceso.status=="ok") {
         console.log(acceso);
-        setUsuario(acceso.data);
+        //setUsuario(acceso.data);
+        dispatch({ type: types.authLogin, payload: acceso.data.id_usuario })
         Swal.fire({
           icon: "success",
           title: acceso.msg,
         });
-        window.location.href = "/formulario1";
+        console.log(state);
+        history.push("/formulario1");
       }
       else{
         Swal.fire({

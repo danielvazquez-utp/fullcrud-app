@@ -15,8 +15,8 @@ const Form1 = () => {
     const [hijos, setHijos] = useState("No");
     const [nohijos, setNohijos] = useState(0);
     const [otroedo, setOtroedo] = useState('');
-    const { usuario } = useContext( fullcrudContext );
-    console.log(usuario);
+    //const { usuario } = useContext( fullcrudContext );
+    const [state, dispatch] = useContext(fullcrudContext);
 
     const setPersona = async() => {
       const url = "http://127.0.0.1:8080/personas";
@@ -165,7 +165,7 @@ const Form1 = () => {
                                       <h5 className="card-title m-0">Usuario</h5>
                                   </div>
                                   <div className="card-body">
-                                      <h6 className="card-title">Nombre: { usuario.usuario } </h6>
+                                      <h6 className="card-title">Nombre: { state.usuario } </h6>
                            
                                   </div>
                               </div>
