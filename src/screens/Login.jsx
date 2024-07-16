@@ -1,4 +1,4 @@
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { getUsuarioByUserPass } from "../utils/usuarios";
 import Swal from "sweetalert2";
@@ -10,7 +10,7 @@ const Login = () => {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [state, dispatch] = useContext(fullcrudContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleAccess = async() => {
     if (user!="" && pass!="") {
@@ -19,13 +19,20 @@ const Login = () => {
       if (acceso.status=="ok") {
         console.log(acceso);
         //setUsuario(acceso.data);
-        dispatch({ type: types.authLogin, payload: acceso.data.id_usuario })
+        //dispatch({ type: types.authLogin, payload: acceso.data.id_usuario })
         Swal.fire({
           icon: "success",
           title: acceso.msg,
         });
         console.log(state);
-        history.push("/formulario1");
+        navigate("/formulario1", {
+          replace: true,
+          state: {
+            logeado: true,
+            id: acceso.data.id_usuario,
+            usuario: acceso.data.usuario
+          }
+        });
       }
       else{
         Swal.fire({

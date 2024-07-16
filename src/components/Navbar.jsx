@@ -1,6 +1,30 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
 const Navbar = () => {
+
+    const { state } = useLocation();
+    const navigate = useNavigate();
+
+    const logout = () => {
+        navigate("/", {
+            replace: true,
+            state: {
+              logeado: false,
+            }
+        });
+    }
+
+    const handleClick = (to) => {
+        navigate(to, {
+            replace: true,
+            state: {
+                logeado: true,
+                id: state.id_usuario,
+                usuario: state.usuario
+            }
+        });
+    }
+
   return (
     <>
         <nav className="main-header navbar navbar-expand-md navbar-light navbar-white m-0">
@@ -13,16 +37,25 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse order-3" id="navbarCollapse">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link to="/formulario1" className="nav-link">Inicio</Link>
+                            <button className="btn btn-xs" onClick={ () => handleClick("/formulario1") }>Formulario</button>
                         </li>
                         <li className="nav-item">
-                            <Link to="/registrados" className="nav-link">Registrados</Link>
+                            <button className="btn btn-xs" onClick={ () => handleClick("/registrados") }>Registrados</button>
                         </li>
                         <li className="nav-item">
-                            <Link to="/gestion" className="nav-link">Gestión</Link>
+                            <button className="btn btn-xs" onClick={ () => handleClick("/gestion") }>Gestión</button>
+                        </li>
+                        <li className="nav-item">
+                            <button className="btn btn-danger btn-xs ml-2" onClick={ () => logout() }>Salir</button>
                         </li>
                     </ul>
                 </div>
+
+                  <ul className="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                      <li className="nav-item">
+                        Bienvenido <strong>{ state.usuario }</strong>
+                      </li>
+                  </ul>
 
             </div>
         </nav>

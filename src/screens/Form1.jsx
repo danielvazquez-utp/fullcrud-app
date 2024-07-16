@@ -4,8 +4,12 @@ import Footer from '../components/Footer';
 import Titlebreadcrums from '../components/Titlebreadcrums';
 import Swal from 'sweetalert2';
 import { fullcrudContext } from "../components/fullcrudContext";
+import { useLocation } from 'react-router-dom';
+import "../index.css";
 
 const Form1 = () => {
+
+    const { state } = useLocation();
 
     const [nombre, setNombre] = useState('');
     const [apaterno, setApaterno] = useState('');
@@ -16,7 +20,7 @@ const Form1 = () => {
     const [nohijos, setNohijos] = useState(0);
     const [otroedo, setOtroedo] = useState('');
     //const { usuario } = useContext( fullcrudContext );
-    const [state, dispatch] = useContext(fullcrudContext);
+    //const [state, dispatch] = useContext(fullcrudContext);
 
     const setPersona = async() => {
       const url = "http://127.0.0.1:8080/personas";
@@ -165,7 +169,7 @@ const Form1 = () => {
                                       <h5 className="card-title m-0">Usuario</h5>
                                   </div>
                                   <div className="card-body">
-                                      <h6 className="card-title">Nombre: { state.usuario } </h6>
+                                      <h6 className="card-title">Nombre: { state?.usuario } </h6>
                            
                                   </div>
                               </div>

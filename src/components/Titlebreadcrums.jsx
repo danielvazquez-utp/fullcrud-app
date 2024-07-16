@@ -9,7 +9,7 @@ const Titlebreadcrums = ({ title="Titulo", subtitle="Subtitulo", breadcrums=["Op
                         <h1 className="m-0"> { title } <small>{ subtitle }</small></h1>
                     </div>
                     <div className="col-sm-6">
-                        <ol className="breadcrumb float-sm-right">
+                        <ol key={1} className="breadcrumb float-sm-right">
                             {
                                 breadcrums.map( (e, index) => {
                                     return (
