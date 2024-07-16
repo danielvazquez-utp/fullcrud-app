@@ -3,8 +3,32 @@ import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import Titlebreadcrums from "../components/Titlebreadcrums"
 import DataTable from 'react-data-table-component'
+import Swal from "sweetalert2"
+import { borrarUsuarioById } from "../utils/usuarios";
 
 const Registrados = () => {
+
+    const handledelete = (id) => {
+        Swal.fire({
+            title: "¿desea borrar el usuario?",
+            showDenyButton: true,
+            confirmButtonText: "Si",
+            denyButtonText: "No",
+        }).then( async(result) => {
+            if (result.isConfirmed) {
+                const respuesta = await borrarUsuarioById(id);
+                if (respuesta.status=="ok") {
+                    Swal.fire(respuesta.msg, "", "success");
+                }
+                else{
+                    Swal.fire(respuesta.msg, "", "warning");
+                }
+
+            } else if (result.isDenied) {
+                Swal.fire("Acción cancelada", "", "info");
+            }
+        })
+    }
 
     const [columnas, setColumnas] = useState([
         {
@@ -15,6 +39,23 @@ const Registrados = () => {
             name: 'Contraseña',
             selector: row => row.pass,
         },
+        {
+            button: true,
+            cell: (row) => {
+                return (
+                    <>
+                        <div className="btn-group">
+                            <button type="button" class="btn btn-warning" title="Editar usuario">
+                                <i className="fas fa-user-edit"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger" title="Borrar usuario" onClick={()=>handledelete(row.id)}>
+                                <i className="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </>
+                )
+            }
+        }
     ]);
 
     const [datos, setDatos] = useState([
@@ -74,7 +115,8 @@ const Registrados = () => {
                     <DataTable
                         columns={columnas}
                         data={datos}
-                        selectableRows
+                        pagination
+                        resposive
                     />
 
                     </div>
