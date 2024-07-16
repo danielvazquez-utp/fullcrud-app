@@ -3,25 +3,63 @@ import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import Titlebreadcrums from "../components/Titlebreadcrums"
 import DataTable from 'react-data-table-component'
+import Swal from "sweetalert2"
 
 const Registrados = () => {
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "¿Deseas actualizar los datos del usuario?",
+            showDenyButton: true,
+            //showCancelButton: true,
+            confirmButtonText: "Si",
+            denyButtonText: "No"
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Swal.fire("Saved!", "", "success");
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        });
+    }
 
     const [columnas, setColumnas] = useState([
         {
             name: 'Usuario',
             selector: row => row.user,
+            sortable: true,
         },
         {
             name: 'Contraseña',
             selector: row => row.pass,
+            sortable: true,
         },
+        {
+            button: true,
+            center: true,
+            cell: (row) => {
+                    return (
+                    <>
+                        <div className="btn-group">
+                            <button className="btn btn-xs btn-info" onClick={() => handleUpdate(row.id)} >
+                                <i className="fas fa-user-edit"></i>
+                            </button>
+                            <button className="btn btn-xs btn-danger" onClick={() => handleDelete(row.id)} >
+                                <i className="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </>
+                )
+            }
+        }
     ]);
 
     const [datos, setDatos] = useState([
         {
-          id: 1,
-          user: 'Beetlejuice',
-          pass: '1988',
+            id: 1,
+            user: 'Beetlejuice',
+            pass: '1988',
         },
         {
             id: 2,
@@ -42,10 +80,11 @@ const Registrados = () => {
         //console.log(request);
         const response = await request.json();
         const { data } = response;
-        console.log(data);
+        //console.log(data);
         let datos_usuarios = []
         data.map( e => {
             const user = {
+                id: e.id_usuario,
                 user: e.usuario,
                 pass: e.contrasena
             }
@@ -74,7 +113,8 @@ const Registrados = () => {
                     <DataTable
                         columns={columnas}
                         data={datos}
-                        selectableRows
+                        pagination
+                        responsive
                     />
 
                     </div>
