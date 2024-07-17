@@ -9,6 +9,7 @@ import { borrarUsuarioById } from "../utils/usuarios";
 const Registrados = () => {
 
     const handledelete = (id) => {
+        //console.log("Id: ", id);
         Swal.fire({
             title: "¿desea borrar el usuario?",
             showDenyButton: true,
@@ -17,13 +18,37 @@ const Registrados = () => {
         }).then( async(result) => {
             if (result.isConfirmed) {
                 const respuesta = await borrarUsuarioById(id);
+                //console.log(respuesta);
                 if (respuesta.status=="ok") {
                     Swal.fire(respuesta.msg, "", "success");
+                    getUsuarios();
                 }
                 else{
                     Swal.fire(respuesta.msg, "", "warning");
                 }
+            } else if (result.isDenied) {
+                Swal.fire("Acción cancelada", "", "info");
+            }
+        })
+    }
 
+    const handleUpdate = (id) => {
+        Swal.fire({
+            title: "¿desea actualizar el usuario?",
+            showDenyButton: true,
+            confirmButtonText: "Si",
+            denyButtonText: "No",
+        }).then( async(result) => {
+            if (result.isConfirmed) {
+                const respuesta = await borrarUsuarioById(id);
+                //console.log(respuesta);
+                if (respuesta.status=="ok") {
+                    Swal.fire(respuesta.msg, "", "success");
+                    getUsuarios();
+                }
+                else{
+                    Swal.fire(respuesta.msg, "", "warning");
+                }
             } else if (result.isDenied) {
                 Swal.fire("Acción cancelada", "", "info");
             }
@@ -45,10 +70,10 @@ const Registrados = () => {
                 return (
                     <>
                         <div className="btn-group">
-                            <button type="button" class="btn btn-warning" title="Editar usuario">
+                            <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modal-update" title="Editar usuario">
                                 <i className="fas fa-user-edit"></i>
                             </button>
-                            <button type="button" class="btn btn-danger" title="Borrar usuario" onClick={()=>handledelete(row.id)}>
+                            <button type="button" className="btn btn-danger" title="Borrar usuario" onClick={()=>handledelete(row.id)}>
                                 <i className="fas fa-trash-alt"></i>
                             </button>
                         </div>
@@ -87,6 +112,7 @@ const Registrados = () => {
         let datos_usuarios = []
         data.map( e => {
             const user = {
+                id: e.id_usuario,
                 user: e.usuario,
                 pass: e.contrasena
             }
@@ -119,6 +145,26 @@ const Registrados = () => {
                         resposive
                     />
 
+                    </div>
+                </div>
+            </div>
+
+            <div className="modal fade" id="modal-update" style={{ display: "None" }} aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h4 className="modal-title">Actualizar datos del usuario</h4>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <p>One fine body…</p>
+                        </div>
+                        <div className="modal-footer justify-content-between">
+                            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-primary">Save changes</button>
+                        </div>
                     </div>
                 </div>
             </div>
