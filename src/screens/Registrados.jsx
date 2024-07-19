@@ -4,24 +4,55 @@ import Navbar from "../components/Navbar"
 import Titlebreadcrums from "../components/Titlebreadcrums"
 import DataTable from 'react-data-table-component'
 import Swal from "sweetalert2"
+import { borrarUsuarioById } from "../utils/usuarios";
 
 const Registrados = () => {
 
-    const handleDelete = (id) => {
+    const handledelete = (id) => {
+        //console.log("Id: ", id);
         Swal.fire({
-            title: "¿Deseas actualizar los datos del usuario?",
+            title: "¿desea borrar el usuario?",
             showDenyButton: true,
-            //showCancelButton: true,
             confirmButtonText: "Si",
-            denyButtonText: "No"
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
+            denyButtonText: "No",
+        }).then( async(result) => {
             if (result.isConfirmed) {
-                Swal.fire("Saved!", "", "success");
+                const respuesta = await borrarUsuarioById(id);
+                //console.log(respuesta);
+                if (respuesta.status=="ok") {
+                    Swal.fire(respuesta.msg, "", "success");
+                    getUsuarios();
+                }
+                else{
+                    Swal.fire(respuesta.msg, "", "warning");
+                }
             } else if (result.isDenied) {
-                Swal.fire("Changes are not saved", "", "info");
+                Swal.fire("Acción cancelada", "", "info");
             }
-        });
+        })
+    }
+
+    const handleUpdate = (id) => {
+        Swal.fire({
+            title: "¿desea actualizar el usuario?",
+            showDenyButton: true,
+            confirmButtonText: "Si",
+            denyButtonText: "No",
+        }).then( async(result) => {
+            if (result.isConfirmed) {
+                const respuesta = await borrarUsuarioById(id);
+                //console.log(respuesta);
+                if (respuesta.status=="ok") {
+                    Swal.fire(respuesta.msg, "", "success");
+                    getUsuarios();
+                }
+                else{
+                    Swal.fire(respuesta.msg, "", "warning");
+                }
+            } else if (result.isDenied) {
+                Swal.fire("Acción cancelada", "", "info");
+            }
+        })
     }
 
     const [columnas, setColumnas] = useState([
@@ -37,15 +68,14 @@ const Registrados = () => {
         },
         {
             button: true,
-            center: true,
             cell: (row) => {
-                    return (
+                return (
                     <>
                         <div className="btn-group">
-                            <button className="btn btn-xs btn-info" onClick={() => handleUpdate(row.id)} >
+                            <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modal-update" title="Editar usuario">
                                 <i className="fas fa-user-edit"></i>
                             </button>
-                            <button className="btn btn-xs btn-danger" onClick={() => handleDelete(row.id)} >
+                            <button type="button" className="btn btn-danger" title="Borrar usuario" onClick={()=>handledelete(row.id)}>
                                 <i className="fas fa-trash-alt"></i>
                             </button>
                         </div>
@@ -117,6 +147,26 @@ const Registrados = () => {
                         responsive
                     />
 
+                    </div>
+                </div>
+            </div>
+
+            <div className="modal fade" id="modal-update" style={{ display: "None" }} aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h4 className="modal-title">Actualizar datos del usuario</h4>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <p>One fine body…</p>
+                        </div>
+                        <div className="modal-footer justify-content-between">
+                            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-primary">Save changes</button>
+                        </div>
                     </div>
                 </div>
             </div>

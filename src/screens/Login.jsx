@@ -9,7 +9,6 @@ const Login = () => {
   //const { setUsuario } = useContext( fullcrudContext );
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
-  const [state, dispatch] = useContext(fullcrudContext);
   const navigate = useNavigate();
 
   const handleAccess = async() => {
@@ -19,16 +18,15 @@ const Login = () => {
       if (acceso.status=="ok") {
         console.log(acceso);
         //setUsuario(acceso.data);
-        //dispatch({ type: types.authLogin, payload: acceso.data.id_usuario })
         Swal.fire({
           icon: "success",
           title: acceso.msg,
         });
-        console.log(state);
+        //window.location.href = "/formulario1";
         navigate("/formulario1", {
           replace: true,
           state: {
-            logeado: true,
+            logged: true,
             id: acceso.data.id_usuario,
             usuario: acceso.data.usuario
           }

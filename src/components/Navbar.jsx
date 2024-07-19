@@ -1,15 +1,15 @@
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
 
-    const { state } = useLocation();
+    const { state } = useLocation(); 
     const navigate = useNavigate();
 
     const logout = () => {
         navigate("/", {
             replace: true,
             state: {
-              logeado: false,
+                logged: false,
             }
         });
     }
@@ -18,11 +18,11 @@ const Navbar = () => {
         navigate(to, {
             replace: true,
             state: {
-                logeado: true,
+                logged: true,
                 id: state.id_usuario,
                 usuario: state.usuario
             }
-        });
+        })
     }
 
   return (
@@ -37,25 +37,25 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse order-3" id="navbarCollapse">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <button className="btn btn-xs" onClick={ () => handleClick("/formulario1") }>Formulario</button>
+                            <button className="nav-link btn" onClick={ () => handleClick("/formulario1")}>Inicio</button>
                         </li>
                         <li className="nav-item">
-                            <button className="btn btn-xs" onClick={ () => handleClick("/registrados") }>Registrados</button>
+                            <button className="nav-link btn" onClick={ () => handleClick("/registrados")}>Registrados</button>
                         </li>
                         <li className="nav-item">
-                            <button className="btn btn-xs" onClick={ () => handleClick("/gestion") }>Gestión</button>
+                            <button className="nav-link btn" onClick={ () => handleClick("/gestion") }>Gestión</button>
                         </li>
                         <li className="nav-item">
-                            <button className="btn btn-danger btn-xs ml-2" onClick={ () => logout() }>Salir</button>
+                            <button className="btn btn-xs btn-danger ml-3" onClick={()=>logout()}>Salir</button>
                         </li>
                     </ul>
                 </div>
 
-                  <ul className="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-                      <li className="nav-item">
-                        Bienvenido <strong>{ state.usuario }</strong>
-                      </li>
-                  </ul>
+                <ul className="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                    <li className="nav-item">
+                        Usuario: <strong>{ state?.usuario }</strong>
+                    </li>
+                </ul>
 
             </div>
         </nav>
