@@ -76,3 +76,7 @@ export const getUsuarioById = async(id) => {
   const response = await request.json();
   return response;
 }
+
+export const getSaludo = ( nombre ) => {
+  return "Hola " + nombre;
+}
