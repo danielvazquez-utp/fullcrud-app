@@ -1,28 +1,47 @@
-import { getMensaje, getUsuarioById } from "../../src/utils/usuarios";
+import { getSaludo, getUsuarioById, getUsuarios } from "../../src/utils/usuarios";
 
-describe('Pruebas sobre las funciones de Usuarios', () => {
+describe('Pruebas en funciones de usuario', () => { 
 
-    test('Recuperación de mensaje', () => {
-        const usuario = "Paulo";
-        const msg = getMensaje(usuario);
-        expect(msg).toBe(`Saludos ${ usuario }`);
+    test('Prueba de mensaje', () => {
+
+        const nombre = "Daniel";
+        const msg = getSaludo(nombre);
+        
+        /* En este punto hay un error que exige agregar una configuración en Babel https://jestjs.io/docs/getting-started y de la misma manera hay que agregar el archivo de configuración de babel.config.cjs */
+
+        expect( msg ).toBe( `Hola ${ nombre } ` );
+
     });
 
-    test('Evaluando función que recupera un usuario por identificador', async () => {
+    test('Prueba para recuperar la colección de usuarios', async () => {
+        /* const id = 1;
+        const usuario = await getUsuarioById(id);
+        console.log(usuarios);
 
-        const id = 7;
-        const usuario = await getUsuarioById( id );
+        expect( usuarios ).toBe('string'); */
+
+        /* En este punto hay que instalar una dependencia para fetch polifill 
+        https://www.npmjs.com/package/whatwg-fetch
+
+        Creando dos archivos mas:
+        - jest.config.js
+        - jest.setup.js */
+
+        const usuario = await getUsuarioById(1);
+        console.log(usuario);
+
         const respuesta = {
             "status": "ok",
             "msg": "Si se encontró el usuario",
             "data": {
-              "id_usuario": 7,
+              "id_usuario": 1,
               "usuario": "daniel",
               "contrasena": "12345"
             }
         }
+
         expect( usuario ).toEqual( respuesta );
 
-    });
+    })
 
 })

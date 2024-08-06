@@ -1,33 +1,22 @@
+describe('Pruebas en demo', () => { 
 
-describe('Esta es una prueba demo', () => {
+    test('Este es un demo de prueba', () => { 
+        // Prueba inicial
+        /* if (true != false) {
+            throw new Error("Aquí hubo un error");
+        } */
     
-    test('Verificación de prueba lógica', () => { 
+        // 1. inicialización
+        const msg ="Hola mundo";
     
-        if (true != true) {
-            throw new Error("Aquí ocurrió un error");
-        }
+        // 2. Estímulo
+        const msg2 = msg.trim(msg);
     
-    });
-
-    test('Verificación de prueba lógica fallida', () => { 
+        // 3. Observar el comportamiento
+        //expect( msg ).toBe( msg2 );
+        // instalar dependencias de jest https://www.npmjs.com/package/@types/jest
     
-        if (true == true) {
-            throw new Error("Aquí ocurrió un error");
-        }
-    
-    });
-
-    test('Prueba empleando el marco de Jest', () => {
-        //1. Inicialización
-        const msg1 = "Hola mundo ";
-
-        //2. Estímulo
-        const msg2 = msg1.trim(msg1);
-
-        //3. Comportamiento
-        //expect(msg1).toBe(msg2);
-        expect(msg1).toBe(msg2);
+        expect(msg).toBe(msg2);
     })
-
 
 })
