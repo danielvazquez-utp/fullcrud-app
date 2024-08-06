@@ -9,7 +9,7 @@ describe('Pruebas en funciones de usuario', () => {
         
         /* En este punto hay un error que exige agregar una configuración en Babel https://jestjs.io/docs/getting-started y de la misma manera hay que agregar el archivo de configuración de babel.config.cjs */
 
-        expect( msg ).toBe( `Hola ${ nombre } ` );
+        expect( msg ).toBe( `Saludos ${ nombre }` );
 
     });
 

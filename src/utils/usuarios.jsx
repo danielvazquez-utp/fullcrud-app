@@ -95,6 +95,6 @@ export const updateUsuario = async(id, usuario, passw) => {
   return response;
 }
 
-export const getMensaje = (usuario) => {
+export const getSaludo = (usuario) => {
   return "Saludos " + usuario;
 }
