@@ -4,24 +4,59 @@ import Navbar from "../components/Navbar"
 import Titlebreadcrums from "../components/Titlebreadcrums"
 import DataTable from 'react-data-table-component'
 import Swal from "sweetalert2"
+import { borrarUsuarioById, getUsuarioById, updateUsuario } from "../utils/usuarios";
 
 const Registrados = () => {
 
-    const handleDelete = (id) => {
+    const [usuario, setUsuario] = useState("");
+    const [passW, setPassW] = useState("");
+    const [ide, setIde] = useState("");
+
+    const handledelete = (id) => {
+        //console.log("Id: ", id);
         Swal.fire({
-            title: "¿Deseas actualizar los datos del usuario?",
+            title: "¿desea borrar el usuario?",
             showDenyButton: true,
-            //showCancelButton: true,
             confirmButtonText: "Si",
-            denyButtonText: "No"
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
+            denyButtonText: "No",
+        }).then( async(result) => {
             if (result.isConfirmed) {
-                Swal.fire("Saved!", "", "success");
+                const respuesta = await borrarUsuarioById(id);
+                //console.log(respuesta);
+                if (respuesta.status=="ok") {
+                    Swal.fire(respuesta.msg, "", "success");
+                    getUsuarios();
+                }
+                else{
+                    Swal.fire(respuesta.msg, "", "warning");
+                }
             } else if (result.isDenied) {
-                Swal.fire("Changes are not saved", "", "info");
+                Swal.fire("Acción cancelada", "", "info");
             }
-        });
+        })
+    }
+
+    const handleUpdate = async(id) => {
+        const respuesta = await getUsuarioById(id);
+        console.log(respuesta);
+        if (respuesta.status=="ok") {
+            setIde(respuesta.data.id_usuario);
+            setUsuario(respuesta.data.usuario);
+            setPassW(respuesta.data.contrasena);
+        }
+        else{
+            Swal.fire(respuesta.msg, "", "warning");
+        }
+    }
+
+    const handleConfirmUpdate = async () => {
+        const respuesta = await updateUsuario(ide, usuario, passW);
+        if (respuesta.status=="ok") {
+            Swal.fire(respuesta.msg, "", "success");
+        }
+        else{
+            Swal.fire(respuesta.msg, "", "warning");
+        }
     }
 
     const [columnas, setColumnas] = useState([
@@ -37,15 +72,14 @@ const Registrados = () => {
         },
         {
             button: true,
-            center: true,
             cell: (row) => {
-                    return (
+                return (
                     <>
                         <div className="btn-group">
-                            <button className="btn btn-xs btn-info" onClick={() => handleUpdate(row.id)} >
+                            <button type="button" className="btn btn-warning" data-toggle="modal" data-target="#modal-update" title="Editar usuario" onClick={()=>handleUpdate(row.id)}>
                                 <i className="fas fa-user-edit"></i>
                             </button>
-                            <button className="btn btn-xs btn-danger" onClick={() => handleDelete(row.id)} >
+                            <button type="button" className="btn btn-danger" title="Borrar usuario" onClick={()=>handledelete(row.id)}>
                                 <i className="fas fa-trash-alt"></i>
                             </button>
                         </div>
@@ -117,6 +151,45 @@ const Registrados = () => {
                         responsive
                     />
 
+                    </div>
+                </div>
+            </div>
+
+            <div className="modal fade" id="modal-update" style={{ display: "None" }} aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h4 className="modal-title">Actualizar datos del usuario</h4>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+
+                            <div className="mb-3 row">
+                                <label className="col-sm-2 col-form-label">Id</label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly class="form-control-plaintext" value={ ide } />
+                                </div>
+                            </div>
+                            <div className="mb-3 row">
+                                <label className="col-sm-2 col-form-label">Usuario</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control-plaintext" value={ usuario } onChange={ (e)=> setUsuario( e.target.value ) } required />
+                                </div>
+                            </div>
+                            <div className="mb-3 row">
+                                <label className="col-sm-2 col-form-label">Password</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control-plaintext" value={ passW } onChange={ (e)=>setPassW( e.target.value ) } required />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="modal-footer justify-content-between">
+                            <button type="button" className="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="button" className="btn btn-primary" onClick={()=>handleConfirmUpdate()} >Guardar cambios</button>
+                        </div>
                     </div>
                 </div>
             </div>

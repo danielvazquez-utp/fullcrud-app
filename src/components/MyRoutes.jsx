@@ -10,6 +10,11 @@ const MyRoutes = () => {
     <BrowserRouter>
         <Routes>
             <Route index path="/" element={ <Login /> } />
+            <Route path="/gestion" element={ 
+              <PrivateRoutes>
+                <Gestion />
+              </PrivateRoutes>
+             } />
             <Route path="/formulario1" element={ 
               <PrivateRoutes>
                 <Form1 />
@@ -19,12 +24,7 @@ const MyRoutes = () => {
               <PrivateRoutes>
                 <Registrados />
               </PrivateRoutes>
-            } />
-            <Route path="/gestion" element={ 
-              <PrivateRoutes>
-                <Gestion />
-              </PrivateRoutes>
-            } />
+             } />
         </Routes>
     </BrowserRouter>
   )
